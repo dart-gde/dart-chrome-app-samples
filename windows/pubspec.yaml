@@ -1,0 +1,6 @@
+name: windows
+description: Windowing API Sample
+dependencies:
+  chrome: any
+transformers:
+- chrome
