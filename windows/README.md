@@ -9,4 +9,4 @@ The app creates two windows, an "original" window and a "copycat" window. The co
 * [Window](http://developer.chrome.com/apps/app.window.html)
      
 ## Screenshot
-![screenshot](https://raw.github.com/dart-gde/dart-chrome-app-samples/master/windows/assets/screenshot_1280_800.png)
+![screenshot](https://raw.github.com/dart-gde/dart-chrome-app-samples/master/windows/screenshot.png)
