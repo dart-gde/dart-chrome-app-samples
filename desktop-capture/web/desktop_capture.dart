@@ -18,7 +18,8 @@ void onAcceptApproved(desktop_id) {
   document.querySelector('button').innerHtml = "Disable Capture";
   print("Desktop sharing started.. desktop_id: $desktop_id");
   
-  window.navigator.getUserMedia(audio: false, video: { "mandatory": {
+  window.navigator.getUserMedia(audio: false, video: { 
+    "mandatory": {
       "chromeMediaSource": 'desktop',
       "chromeMediaSourceId": desktop_id,
       "minWidth": 1280,
