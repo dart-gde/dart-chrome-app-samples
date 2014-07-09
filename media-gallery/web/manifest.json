@@ -2,6 +2,7 @@
   "name": "Media Gallery Sample",
   "version": "0.1.0",
   "manifest_version": 2,
+  "minimum_chrome_version": "36",
   "description": "Used to test Media Gallery API",
   "permissions": [{
       "mediaGalleries": ["read", "scan", "allAutoDetected"]

@@ -11,7 +11,7 @@ List<GalleryData> gGalleryData = [];
 Element gCurOptGrp = null;
 var imgFormats = ['png', 'bmp', 'jpeg', 'jpg', 'gif', 'png', 'svg', 'xbm', 'webp'];
 var audFormats = ['wav', 'mp3'];
-var vidFormats = ['3gp', '3gpp', 'avi', 'flv', 'mov', 'mpeg', 'mpeg4', 'mp4', 'ogg', 'webm', 'wmv'];
+var vidFormats = ['3gp', '3gpp', 'avi', 'flv', 'mov', 'mpeg', 'mpeg4', 'mp4', 'ogg', 'webm', 'wmv', 'mkv'];
 
 void errorPrintFactory(e, String custom) {
   var sb = new StringBuffer();
@@ -19,28 +19,8 @@ void errorPrintFactory(e, String custom) {
   if (!(e is FileError)) {
     return;
   }
-  switch (e.code) {
-    case FileError.QUOTA_EXCEEDED_ERR:
-      sb.write("QUOTA_EXCEEDED_ERR");
-      break;
-    case FileError.NOT_FOUND_ERR:
-      sb.write("NOT_FOUND_ERR");
-      break;
-    case FileError.SECURITY_ERR:
-      sb.write("SECURITY_ERR");
-      break;
-    case FileError.INVALID_MODIFICATION_ERR:
-      sb.write("INVALID_MODIFICATION_ERR");
-      break;
-    case FileError.INVALID_STATE_ERR:
-      sb.write("INVALID_STATE_ERR");
-      break;
-    default:
-      sb.write("unknown error");
-      break;
-  }
+  sb.write(e.name);
   print(sb.toString());
-  print(e);
 }
 
 class GalleryData {
@@ -55,12 +35,82 @@ class GalleryData {
 
 void clearContentDiv() {
   var content_div = document.querySelector("#content");
-  while (content_div.childNodes.length >= 1)
-    content_div.childNodes.removeAt(0);
+  while (content_div.children.length >= 1)
+    content_div.children.removeAt(0);
 }
 
 void clearList() {
   document.querySelector("#GalleryList").innerHtml = "";
+}
+
+Element addTypeToContentDiv(String type) {
+  var content = document.querySelector("#content");
+  var elemType = document.createElement(type);
+  content.append(elemType);
+  return (elemType);
+}
+
+String getFileType(String path) {
+  var ext = path.split(".")[path.split(".").length - 1];
+  if (imgFormats.indexOf(ext) != -1)
+    return ("image");
+  else if (vidFormats.indexOf(ext) != -1)
+    return ("video");
+  else if (audFormats.indexOf(ext) != -1)
+    return ("audio");
+  return (null);
+}
+
+void updateSelection(Event event) {
+  SelectElement selList = document.querySelector("#GalleryList");
+  var index = selList.selectedIndex;
+  var fsId = selList.options[index].getAttribute("data-fsid");
+  FileSystem fs = null;
+  
+  for (int i = 0; i < gGalleryArray.length; i++) {
+    var mData = chrome.mediaGalleries.getMediaFileSystemMetadata(gGalleryArray[i]);
+    if (mData.galleryId == fsId) {
+      fs = gGalleryArray[i];
+      break;
+    }
+  }
+  if (fs != null) {
+    var path = selList.options[index].getAttribute("data-fullpath");
+    fs.root.getFile(path).then((FileEntry file_entry) {
+      Element newElem = null;
+      clearContentDiv();
+      var type = getFileType(path);
+      if (type == "image")
+        newElem = addTypeToContentDiv('img');
+      else if (type == "audio")
+        newElem = addTypeToContentDiv('audio');
+      else if (type == "video")
+        newElem = addTypeToContentDiv('video');
+      if (newElem != null) {
+        String chromeVersion = window.navigator.appVersion.split(" ")[11];
+        int version = int.parse(chromeVersion.split("/")[1].split(".")[0], onError: (e) => -1);
+        if (version == 36) {
+          newElem.setAttribute("src", file_entry.toUrl()); 
+        }
+        else if (version == 37) {
+          file_entry.file().then((File file) {
+            chrome.mediaGalleries.getMetadata(file).then((chrome.MediaMetadata metadata) {
+              if (metadata.toJs()["attachedImages"].length > 0) {
+                var blob = metadata.toJs()["attachedImages"][0];
+                var posterBlob = Url.createObjectUrl(blob);
+                newElem.setAttribute("poster", posterBlob);
+              }
+              newElem.setAttribute("src", file_entry.toUrl());
+            }).catchError((e) {
+              print("Error getMetadata: $e");
+              print("Use old way to put item in the dom");
+              newElem.setAttribute("src", file_entry.toUrl());               
+            });
+          });
+        }
+      }
+    }).catchError((e) => print("new File or file does not exist: $e"));
+  }
 }
 
 void addItem(Entry itemEntry) {
@@ -192,4 +242,8 @@ void main() {
       scanGalleries(gGalleryArray[0]);
     }
   });
+  document.querySelector("#GalleryList").onChange.listen((event) {
+    updateSelection(event);
+  });
+  
 }
