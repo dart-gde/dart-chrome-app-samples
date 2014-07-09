@@ -87,27 +87,20 @@ void updateSelection(Event event) {
       else if (type == "video")
         newElem = addTypeToContentDiv('video');
       if (newElem != null) {
-        String chromeVersion = window.navigator.appVersion.split(" ")[11];
-        int version = int.parse(chromeVersion.split("/")[1].split(".")[0], onError: (e) => -1);
-        if (version == 36) {
-          newElem.setAttribute("src", file_entry.toUrl()); 
-        }
-        else if (version == 37) {
-          file_entry.file().then((File file) {
-            chrome.mediaGalleries.getMetadata(file).then((chrome.MediaMetadata metadata) {
-              if (metadata.toJs()["attachedImages"].length > 0) {
-                var blob = metadata.toJs()["attachedImages"][0];
-                var posterBlob = Url.createObjectUrl(blob);
-                newElem.setAttribute("poster", posterBlob);
-              }
-              newElem.setAttribute("src", file_entry.toUrl());
-            }).catchError((e) {
-              print("Error getMetadata: $e");
-              print("Use old way to put item in the dom");
-              newElem.setAttribute("src", file_entry.toUrl());               
-            });
+        file_entry.file().then((File file) {
+          chrome.mediaGalleries.getMetadata(file).then((chrome.MediaMetadata metadata) {
+            if (metadata.toJs()["attachedImages"].length > 0) {
+              var blob = metadata.toJs()["attachedImages"][0];
+              var posterBlob = Url.createObjectUrl(blob);
+              newElem.setAttribute("poster", posterBlob);
+            }
+            newElem.setAttribute("src", file_entry.toUrl());
+          }).catchError((e) {
+            print("Error getMetadata: $e");
+            print("Use old way to put item in the dom");
+            newElem.setAttribute("src", file_entry.toUrl());               
           });
-        }
+        });
       }
     }).catchError((e) => print("new File or file does not exist: $e"));
   }
