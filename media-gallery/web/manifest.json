@@ -8,7 +8,7 @@
       "mediaGalleries": ["read", "scan", "allAutoDetected"]
   }],
   "icons": {
-    "128": "dart_icon.png"
+    "128": "mga-128color.png"
   },
   "app": {
      "background": {

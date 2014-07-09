@@ -1,0 +1,6 @@
+name: camera-capture
+description: A sample Chrome packaged application
+dependencies:
+  chrome: any
+transformers:
+- chrome

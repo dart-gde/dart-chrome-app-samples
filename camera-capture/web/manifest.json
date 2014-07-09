@@ -1,0 +1,21 @@
+{
+  "name": "Camera capture",
+  "version": "1",
+  
+  "manifest_version": 2,
+  
+  "icons": {
+    "16": "camera.png",
+    "128": "camera.png"
+  },
+  
+  "app": {
+    "background": {
+      "scripts": ["background.js"]
+    }
+  },
+  "permissions": [
+    "audioCapture",
+    "videoCapture"
+  ]
+}
