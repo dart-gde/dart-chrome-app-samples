@@ -1,12 +1,14 @@
-# Media Gallery
+# Camera Capture
 
-This is a sample application that uses the [media gallery](http://developer.chrome.com/apps/mediaGalleries.html) API to read and show user's media without requiring direct filesystem permission.
+Shows how to grab a camera and microphone feed using getUserMedia. Requires
+the appropriate permissions (`audioCapture` and `videoCapture`)
+to be set in the manifest file.
 
 ## APIs
 
-* [Media gallery](http://developer.chrome.com/apps/mediaGalleries.html)
 * [Runtime](http://developer.chrome.com/apps/app.runtime.html)
 * [Window](http://developer.chrome.com/apps/app.window.html)
+* [videoCapture and audioCapture](http://developer.chrome.com/apps/manifest.html#permissions)
 
      
 ## Screenshot
