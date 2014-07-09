@@ -246,4 +246,31 @@ void main() {
     updateSelection(event);
   });
   
+  ButtonElement scan_button = document.querySelector("#scan-button");
+  scan_button.onClick.listen((event) {
+    if (scan_button.innerHtml == "Cancel Scan")
+      chrome.mediaGalleries.cancelMediaScan();
+    else {
+      scan_button.innerHtml = "Cancel Scan";
+      chrome.mediaGalleries.startMediaScan();
+    }
+  });
+  document.querySelector("#add-scan-results-button").onClick.listen((event) {
+    chrome.mediaGalleries.addScanResults().then(getGalleriesInfo);
+  });
+  
+  chrome.mediaGalleries.onScanProgress.listen((chrome.ScanProgressDetails scan_progress_details) {
+    if (scan_progress_details.type.value == "finish") {
+      document.querySelector("#status").innerHtml = 'Scan found ${scan_progress_details.galleryCount} galleries';
+    }
+    else {
+      document.querySelector('#status').innerHtml = 'Scanning: ${scan_progress_details.type}';
+    }
+    
+    if (scan_progress_details.type.value != "start") {
+      document.querySelector('#scan-button').innerHtml = 'Search for Galleries';
+    }
+  });
 }
+
+
