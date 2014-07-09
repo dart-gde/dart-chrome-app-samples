@@ -1,0 +1,17 @@
+{
+  "name": "Context menu",
+  "version": "1",
+  
+  "manifest_version": 2,
+  
+  "icons": {"128": "dart_icon.png"},
+  
+  "app": {
+    "background": {
+      "scripts": ["background.js"]
+    }
+  },
+  "permissions": [
+    "contextMenus"
+  ]
+}
