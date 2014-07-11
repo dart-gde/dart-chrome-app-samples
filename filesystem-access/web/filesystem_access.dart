@@ -5,7 +5,6 @@ import 'package:chrome/chrome_app.dart' as chrome;
 
 import "dnd.dart";
 
-var chosen_entry = null;
 TextAreaElement textarea = null;
 ButtonElement saveFileButton = null;
 
