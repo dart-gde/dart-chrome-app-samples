@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Filesystem access</title>
+    <link rel="stylesheet" href="filesystem_access.css">
+  </head>
+  <body>
+    <nav>
+      <button id="choose_file">Choose File</button>
+      <button id="choose_dir">Choose Directory</button>
+    </nav>
+    Path: <input type="text" id="file_path" readonly>
+    <span>Size: <span id="file_size"></span> bytes</span>
+    <output></output>
+    <textarea></textarea>
+    <p>
+      <button id="save_file" disabled>Save As</button>
+    </p>
+    
+    <script src="packages/chrome/bootstrap.js" defer></script>
+    <script src="filesystem_access.dart" type="application/dart"></script>    
+  </body>
+</html>

@@ -1,0 +1,6 @@
+name: filesystem-access
+description: A sample Chrome packaged application
+dependencies:
+  chrome: any
+transformers:
+- chrome
