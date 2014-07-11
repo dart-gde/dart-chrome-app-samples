@@ -44,7 +44,7 @@ Future<String> readAsText(FileEntry entry) {
     var reader = new FileReader();
     reader.onError.listen(errorHandler);
     reader.onLoadEnd.listen((ProgressEvent progress_event) {
-      completer.complete(progress_event.target.result);
+      completer.complete((progress_event.target as FileReader).result);
     });
     reader.readAsText(file);
   });
@@ -62,8 +62,8 @@ void onDrop(DataTransfer data_transfer) {
       break;
     }
   }
-  
-  displayEntryData(entry);
+  if (entry != null)
+    displayEntryData(entry);
   OutputElement output = document.querySelector("output");;
   if (entry == null || entry.isDirectory) {
     output.value = "Sorry. That's not a text file.";
