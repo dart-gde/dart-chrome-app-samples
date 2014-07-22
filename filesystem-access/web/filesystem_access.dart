@@ -5,9 +5,6 @@ import 'package:chrome/chrome_app.dart' as chrome;
 
 import "dnd.dart";
 
-TextAreaElement textarea = null;
-ButtonElement saveFileButton = null;
-
 void errorHandler(message) {
   window.console.error(message);
 }
@@ -20,7 +17,6 @@ void displayEntryData(Entry entry) {
     entry.getMetadata().then((Metadata metadata) {
       file_size.text = metadata.size.toString();
     }).catchError((e) => print("getMetadata error: $e"));
-
     try {
       chrome.fileSystem.getDisplayPath(entry).then((String path) {
         file_path.value = path;
@@ -31,6 +27,7 @@ void displayEntryData(Entry entry) {
     }
   }
   else {
+    TextAreaElement textarea = document.querySelector("textarea");
     textarea.innerHtml = "";
     file_path.value = entry.fullPath;
     file_size.text = "N/A";
@@ -70,15 +67,15 @@ void onDrop(DataTransfer data_transfer) {
   }
   else if (entry.isFile) {
     output.value = "";
-    readAsText(entry).then((String result) {
+    readAsText(entry).then((result) {
+      TextAreaElement textarea = document.querySelector("textarea");
       textarea.innerHtml = result;
     });
+    ButtonElement saveFileButton = document.querySelector("#save_file");
     saveFileButton.disabled = false;
   }
 }
 
 void main() {
-  textarea = document.querySelector("textarea");
-  saveFileButton = document.querySelector("#save_file");
   var dnd = new DnDFileController("body", onDrop);
 }
