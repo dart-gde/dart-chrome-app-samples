@@ -41,4 +41,4 @@ Build your application
 
 ### Step 6
 
-Load your unpacked extension and launch it.
+Load your unpacked extension from your build folder and launch it.
