@@ -3,42 +3,26 @@
 
 import 'dart:html';
 
-import 'package:paper_elements/paper_input.dart';
+import 'package:chrome/chrome_app.dart' as chrome;
+
 import 'package:polymer/polymer.dart';
 
-/// A Polymer `<main-app>` element.
 @CustomTag('main-app')
 class MainApp extends PolymerElement {
-  @observable String reversed = '';
+	int _boundsChange = 100;
 
-  /// Constructor used to create instance of MainApp.
+
+	/// Constructor used to create instance of MainApp.
   MainApp.created() : super.created();
 
-  void reverseText(Event event, Object object, PaperInput target) {
-    reversed = target.value.split('').reversed.join('');
+  void resizeWindow() {
+	  chrome.ContentBounds bounds = chrome.app.window.current().getBounds();
+
+	  bounds.width += this._boundsChange;
+	  bounds.left -= this._boundsChange ~/ 2;
+
+	  chrome.app.window.current().setBounds(bounds);
+
+	  this._boundsChange *= -1;
   }
-
-  // Optional lifecycle methods - uncomment if needed.
-
-//  /// Called when an instance of main-app is inserted into the DOM.
-//  attached() {
-//    super.attached();
-//  }
-
-//  /// Called when an instance of main-app is removed from the DOM.
-//  detached() {
-//    super.detached();
-//  }
-
-//  /// Called when an attribute (such as a class) of an instance of
-//  /// main-app is added, changed, or removed.
-//  attributeChanged(String name, String oldValue, String newValue) {
-//    super.attributeChanges(name, oldValue, newValue);
-//  }
-
-//  /// Called when main-app has been fully prepared (Shadow DOM created,
-//  /// property observers set up, event listeners attached).
-//  ready() {
-//    super.ready();
-//  }
 }

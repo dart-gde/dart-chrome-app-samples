@@ -9,18 +9,36 @@
 <link rel="import" href="../../packages/paper_elements/paper_input.html">
 
 <polymer-element name="main-app">
-  <template>
-    <style>
-      :host {
-        display: block;
-      }
-    </style>
+    <template>
+        <style>
+            :host {
+                display: block;
+            }
 
-    <paper-input label="Type something..." on-keyup="{{reverseText}}"></paper-input>
+            h1, p {
+                color: #333;
+            }
 
-    <p>
-      Reversed: {{ reversed }}
-    </p>
-  </template>
-  <script type="application/dart" src="main_app.dart"></script>
+            #container_id {
+                height: 400px;
+                position: relative;
+                border: 1px solid #ccc;
+                background-color: #fff;
+            }
+
+            #text_id {
+                font-size: 24pt;
+                text-align: center;
+                margin-top: 140px;
+            }
+        </style>
+        <h1>Test</h1>
+
+        <p>Hello world from PolymerDart!</p>
+
+        <div id='container_id'>
+            <p id='text_id' on-tap="{{resizeWindow}}">Click me!</p>
+        </div>
+    </template>
+    <script type="application/dart" src="main_app.dart"></script>
 </polymer-element>
